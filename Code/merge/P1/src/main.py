@@ -86,11 +86,11 @@ def ondriver_drivercontrol_0():
             motor_14.spin(REVERSE)
             # Jail needs testing
         if controller_1.buttonRight.pressing():
-            pneumatic_fla.set(True)
+            pneumatic_flap.set(True)
             # Pneumatic High (Goal)
             wait(0.3, SECONDS)
         if controller_1.buttonLeft.pressing():
-            pneumatic_fla.set(False)
+            pneumatic_flap.set(False)
             wait(0.3, SECONDS)
             # Pneumatic Low (Jail)
         if controller_1.buttonX.pressing():
