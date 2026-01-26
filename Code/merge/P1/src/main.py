@@ -34,7 +34,7 @@ brain_inertial = Inertial(Ports.PORT_NULL)
 
 # Construct a 4-Motor Drivetrain (SmartDrive is used with an Inertial Sensor)
 # The values (wheel travel, track width, etc.) should be adjusted for your specific robot
-drivetrain = SmartDrive(left_motors, right_motors, brain_inertial, 101.6, 295, 40, MM, 1)
+drivetrain = SmartDrive(left_motors, right_motors, brain_inertial, 101.6, 317.5, 431.8, MM, 1)
 
 # Example usage:
 # drivetrain.drive_for(FORWARD, 12, INCHES)
