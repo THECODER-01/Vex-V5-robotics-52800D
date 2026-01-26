@@ -86,9 +86,7 @@ def Automonus_callback_0():
         drivetrain.drive_for(FORWARD, 756, MM)
         drivetrain.turn_for(LEFT, 90, DEGREES)
         drivetrain.drive_for(FORWARD, 250, MM, wait=False)
-        motor_13.spin(FORWARD)
-        motor_14.spin(FORWARD)
-        motor_12.spin(FORWARD)
+        AUTOP.broadcast()
         # Intake on
         # Top goal
         wait(8, SECONDS)
@@ -99,9 +97,7 @@ def Automonus_callback_0():
         drivetrain.drive_for(FORWARD, 756, MM)
         drivetrain.turn_for(RIGHT, 90, DEGREES)
         drivetrain.drive_for(FORWARD, 250, MM, wait=False)
-        motor_13.spin(FORWARD)
-        motor_14.spin(FORWARD)
-        motor_12.spin(FORWARD)
+        AUTOP.broadcast()
         # Intake on
         # Top goal
         wait(8, SECONDS)
@@ -197,6 +193,13 @@ def Keep_Code_callback_0():
     motor_13.spin(FORWARD)
     motor_14.stop()
     # Keep_Code
+
+def AUTOP_callback_0():
+    global Bottom, Top, O12B, Bottom, O12F, O12S, AStop, PH, PL, PM, Keep_Code
+    motor_12.spin(FORWARD)
+    motor_13.spin(FORWARD)
+    motor_14.spin(FORWARD)
+    # For auntom code
 
 # create a function for handling the starting and stopping of all autonomous tasks
 def vexcode_auton_function():
