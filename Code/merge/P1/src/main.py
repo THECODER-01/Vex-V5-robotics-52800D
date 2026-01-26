@@ -72,6 +72,7 @@ AStop = Event()
 PH = Event()
 PL = Event()
 Keep_Code = Event()
+AUTOP = Event()
 
 myVariable = 0
 S = 0
