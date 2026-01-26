@@ -30,7 +30,7 @@ right_motor_b = Motor(Ports.PORT20, GearSetting.RATIO_18_1, True)
 right_motors = MotorGroup(right_motor_f, right_motor_b)
 
 # (Optional) Create an Inertial Sensor for a SmartDrive
-#brain_inertial = Inertial(Ports.PORT_NULL)
+brain_inertial = Inertial(brain.three_wire_port.h)
 
 # Construct a 4-Motor Drivetrain (SmartDrive is used with an Inertial Sensor)
 # The values (wheel travel, track width, etc.) should be adjusted for your specific robot
