@@ -230,7 +230,6 @@ def vexcode_driver_function():
     # Stop the driver control tasks
     driver_control_task_0.stop()
 
-
 # register the competition functions
 competition = Competition( vexcode_driver_function, vexcode_auton_function )
 
