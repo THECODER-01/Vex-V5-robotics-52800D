@@ -13,11 +13,56 @@ from vex import *
 # Brain should be defined by default
 brain=Brain()
 
-1_1_2 = Motor(Ports.PORT3, GearSetting.RATIO_18_1, False)
-1_1_2 = Motor(Ports.PORT8, GearSetting.RATIO_18_1, False)
+# Library imports
+from vex import *
+
 controller_1 = Controller(PRIMARY)
-1_1_2 = Motor(Ports.PORT1, GearSetting.RATIO_18_1, False)
-1_1_2 = Motor(Ports.PORT10, GearSetting.RATIO_18_1, True)
+
+# Create the left Motors and group them under the MotorGroup "left_motors"
+# The 'True' argument in a Motor definition reverses its direction if needed
+left_motor_f = Motor(Ports.PORT1, GearSetting.RATIO_18_1, False)
+left_motor_b = Motor(Ports.PORT11, GearSetting.RATIO_18_1, False)
+left_motors = MotorGroup(left_motor_f, left_motor_b)
+
+# Create the right Motors and group them under the MotorGroup "right_motors"
+# Motors on opposite sides often need to be reversed to spin in the same direction for forward movement
+right_motor_f = Motor(Ports.PORT9, GearSetting.RATIO_18_1, True)
+right_motor_b = Motor(Ports.PORT20, GearSetting.RATIO_18_1, True)
+right_motors = MotorGroup(right_motor_f, right_motor_b)
+
+# (Optional) Create an Inertial Sensor for a SmartDrive
+brain_inertial = Inertial(Ports.PORT_NULL)
+
+# Construct a 4-Motor Drivetrain (SmartDrive is used with an Inertial Sensor)
+# The values (wheel travel, track width, etc.) should be adjusted for your specific robot
+drivetrain = SmartDrive(left_motors, right_motors, brain_inertial, 101.6, 295, 40, MM, 1)
+
+# Example usage:
+# drivetrain.drive_for(FORWARD, 12, INCHES)
+
+# intake motor
+motor_12 = Motor(Ports.PORT12, GearSetting.RATIO_18_1, False)
+
+# middle/top goal motor
+motor_13 = Motor(Ports.PORT13, GearSetting.RATIO_18_1, False)
+
+# jail motor
+motor_14 = Motor(Ports.PORT14, GearSetting.RATIO_18_1, False)
+
+# Define a 3-wire digital output on port F
+# Supported ports are Brain.three_wire_port.a through h
+pneumatic_flap = DigitalOut(brain.three_wire_port.f)
+
+# Define a 3-wire Bumper on port A
+bumper_a = Bumper(brain.three_wire_port.a)
+
+# To set the device to high (on)
+#pneumatic_flap.set(True)
+
+# To set the device to low (off)
+#pneumatic_flap.set(False)
+
+#1_1_2 = Motor(Ports.PORT10, GearSetting.RATIO_18_1, True)
 
 myVariable = 0
 S = 0
