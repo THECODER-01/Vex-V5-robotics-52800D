@@ -12,9 +12,6 @@ from vex import *
 # Brain should be defined by default
 brain=Brain()
 
-# Library imports
-from vex import *
-
 controller_1 = Controller(PRIMARY)
 
 # Create the left Motors and group them under the MotorGroup "left_motors"
@@ -164,7 +161,7 @@ def O12S_callback_0():
     motor_12.stop()
     # This only stops M12
 
-def O12F_callback_0():
+def O12B_callback_0():
     global Bottom, Top, O12B, Bottom, O12F, O12S, AStop, PH, PL, PM, Keep_Code
     motor_12.spin(REVERSE)
     # This only moves M12
