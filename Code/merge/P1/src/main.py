@@ -36,10 +36,15 @@ drivetrain = SmartDrive(left_motors, right_motors, brain_inertial, 101.6, 317.5,
 # Example usage:
 # drivetrain.drive_for(FORWARD, 12, INCHES)
 
+# Get joystick values (Axis 3 for forward/reverse, Axis 1 for turning)
+# You can also use other axes for arcade or split arcade control
+left_power = controller_1.axis3.position()
+right_power = controller_1.axis2.position() # Or axis3 and axis4 for specific styles
+
 # intake motor
 motor_12 = Motor(Ports.PORT12, GearSetting.RATIO_18_1, False)
 
-# O12F/top goal motor
+# Middle/top goal motor
 motor_13 = Motor(Ports.PORT13, GearSetting.RATIO_18_1, False)
 
 # jail motor
@@ -117,6 +122,11 @@ def ondriver_drivercontrol_0():
     motor_13.set_velocity(120, PERCENT)
     motor_14.set_velocity(120, PERCENT)
     while True:
+
+        # Spin motor groups based on controller input
+        left_motors.spin(FORWARD, left_power, PERCENT)
+        right_motors.spin(FORWARD, right_power, PERCENT)
+
         if controller_1.buttonL1.pressing():
             Top.broadcast()
         if controller_1.buttonL2.pressing():
