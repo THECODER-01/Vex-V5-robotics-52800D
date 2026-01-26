@@ -109,7 +109,6 @@ def onauton_autonomous_0():
     motor_14.set_velocity(120, PERCENT)
     Automonus.broadcast()
 
-
 def ondriver_drivercontrol_0():
     global Bottom, Top, O12B, Bottom, O12F, O12S, AStop, PH, PL, PM, Keep_Code
     drivetrain.set_drive_velocity(80, PERCENT)
