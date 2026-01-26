@@ -1,8 +1,7 @@
 # ---------------------------------------------------------------------------- #
 #                                                                              #
 # 	Module:       main.py                                                      #
-# 	Author:       codespace                                                    #
-# 	Created:      1/23/2026, 5:43:40 PM                                        #
+# 	Author:       Nolan N                                                      #
 # 	Description:  V5 project                                                   #
 #                                                                              #
 # ---------------------------------------------------------------------------- #
@@ -43,7 +42,7 @@ drivetrain = SmartDrive(left_motors, right_motors, brain_inertial, 101.6, 295, 4
 # intake motor
 motor_12 = Motor(Ports.PORT12, GearSetting.RATIO_18_1, False)
 
-# middle/top goal motor
+# O12F/top goal motor
 motor_13 = Motor(Ports.PORT13, GearSetting.RATIO_18_1, False)
 
 # jail motor
@@ -64,12 +63,22 @@ bumper_a = Bumper(brain.three_wire_port.a)
 
 #1_1_2 = Motor(Ports.PORT10, GearSetting.RATIO_18_1, True)
 
+Top = Event()
+O12B = Event()
+Bottom = Event()
+O12F = Event()
+O12S = Event()
+AStop = Event()
+PH = Event()
+PL = Event()
+Keep_Code = Event()
+
 myVariable = 0
 S = 0
 Automonus = Event()
 
 def Automonus_callback_0():
-    global myVariable, S, Automonus
+    global myVariable, S, Automonus, Bottom, Top, O12B, Bottom, O12F, O12S, AStop, PH, PL, PM, Keep_Code
     if bumper_a.pressing():
         # Right side
         drivetrain.drive_for(FORWARD, 400, MM)
@@ -98,7 +107,7 @@ def Automonus_callback_0():
         wait(8, SECONDS)
 
 def onauton_autonomous_0():
-    global myVariable, S, Automonus
+    global myVariable, S, Automonus, Bottom, Top, O12B, Bottom, O12F, O12S, AStop, PH, PL, PM, Keep_Code
     drivetrain.set_drive_velocity(46, PERCENT)
     drivetrain.set_turn_velocity(46, PERCENT)
     motor_12.set_velocity(120, PERCENT)
@@ -106,8 +115,9 @@ def onauton_autonomous_0():
     motor_14.set_velocity(120, PERCENT)
     Automonus.broadcast()
 
+
 def ondriver_drivercontrol_0():
-    global myVariable, S, Automonus
+    global Bottom, Top, O12B, Bottom, O12F, O12S, AStop, PH, PL, PM, Keep_Code
     drivetrain.set_drive_velocity(80, PERCENT)
     drivetrain.set_turn_velocity(80, PERCENT)
     motor_12.set_velocity(120, PERCENT)
@@ -115,44 +125,78 @@ def ondriver_drivercontrol_0():
     motor_14.set_velocity(120, PERCENT)
     while True:
         if controller_1.buttonL1.pressing():
-            motor_13.spin(FORWARD)
-            motor_14.spin(FORWARD)
-            # Top goal
+            Top.broadcast()
         if controller_1.buttonL2.pressing():
-            motor_13.spin(REVERSE)
-            motor_14.stop()
-            # Bottom goal
+            Bottom.broadcast()
         if controller_1.buttonR1.pressing():
-            motor_12.spin(FORWARD)
-            # Intake on
+            O12F.broadcast()
         if controller_1.buttonR2.pressing():
-            motor_12.stop()
-            # Intake off
+            O12S.broadcast()
         if controller_1.buttonB.pressing():
-            motor_12.stop()
-            motor_13.stop()
-            motor_14.stop()
-            # Stop all
-        if controller_1.buttonA.pressing():
-            motor_14.spin(REVERSE)
-            # Jail needs testing
+            AStop.broadcast()
         if controller_1.buttonRight.pressing():
-            pneumatic_flap.set(True)
-            # Pneumatic High (Goal)
-            wait(0.3, SECONDS)
+            PH.broadcast()
         if controller_1.buttonLeft.pressing():
-            pneumatic_flap.set(False)
-            wait(0.3, SECONDS)
-            # Pneumatic Low (Jail)
+            PL.broadcast()
         if controller_1.buttonX.pressing():
-            motor_12.spin(FORWARD)
-            motor_13.spin(FORWARD)
-            motor_14.stop()
-            # Keep Code
+            Keep_Code.broadcast()
         if controller_1.buttonY.pressing():
-            motor_12.spin(REVERSE)
-            # Intake R
+            O12B.broadcast()
+        wait(0.1, SECONDS)
         wait(5, MSEC)
+
+def Top_callback_0():
+    global Bottom, Top, O12B, Bottom, O12F, O12S, AStop, PH, PL, PM, Keep_Code
+    motor_13.spin(FORWARD)
+    motor_14.spin(FORWARD)
+    # Top goal
+
+def Bottom_callback_0():
+    global Bottom, Top, O12B, Bottom, O12F, O12S, AStop, PH, PL, PM, Keep_Code
+    motor_13.spin(REVERSE)
+    motor_14.stop()
+    # Bottom goal
+
+def O12F_callback_0():
+    global Bottom, Top, O12B, Bottom, O12F, O12S, AStop, PH, PL, PM, Keep_Code
+    motor_12.spin(FORWARD)
+    # This only moves M12
+
+def O12S_callback_0():
+    global Bottom, Top, O12B, Bottom, O12F, O12S, AStop, PH, PL, PM, Keep_Code
+    motor_12.stop()
+    # This only stops M12
+
+def O12F_callback_0():
+    global Bottom, Top, O12B, Bottom, O12F, O12S, AStop, PH, PL, PM, Keep_Code
+    motor_12.spin(REVERSE)
+    # This only moves M12
+
+def AStop_callback_0():
+    global Bottom, Top, O12B, Bottom, O12F, O12S, AStop, PH, PL, PM, Keep_Code
+    motor_12.stop()
+    motor_13.stop()
+    motor_14.stop()
+    # This stops All motors
+
+def PH_callback_0():
+    global Bottom, Top, O12B, Bottom, O12F, O12S, AStop, PH, PL, PM, Keep_Code
+    pneumatic_flap.set(True)
+    wait(0.3, SECONDS)
+    # Pneumatic High (Goal)
+
+def PL_callback_0():
+    global Bottom, Top, O12B, Bottom, O12F, O12S, AStop, PH, PL, PM, Keep_Code
+    pneumatic_flap.set(False)
+    wait(0.3, SECONDS)
+    # Pneumatic Low (Jail)
+
+def Keep_Code_callback_0():
+    global Bottom, Top, O12B, Bottom, O12F, O12S, AStop, PH, PL, PM, Keep_Code
+    motor_12.spin(FORWARD)
+    motor_13.spin(FORWARD)
+    motor_14.stop()
+    # Keep_Code
 
 # create a function for handling the starting and stopping of all autonomous tasks
 def vexcode_auton_function():
@@ -182,5 +226,15 @@ competition = Competition( vexcode_driver_function, vexcode_auton_function )
 
 # system event handlers
 Automonus(Automonus_callback_0)
+Top(Top_callback_0)
+PL(PL_callback_0)
+O12F(O12F_callback_0)
+Bottom(Bottom_callback_0)
+O12B(O12B_callback_0)
+PH(PH_callback_0)
+O12S(O12S_callback_0)
+Keep_Code(Keep_Code_callback_0)
+AStop(AStop_callback_0)
+
 # add 15ms delay to make sure events are registered correctly.
 wait(15, MSEC)
