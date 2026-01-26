@@ -13,6 +13,12 @@ from vex import *
 # Brain should be defined by default
 brain=Brain()
 
+1_1_2 = Motor(Ports.PORT3, GearSetting.RATIO_18_1, False)
+1_1_2 = Motor(Ports.PORT8, GearSetting.RATIO_18_1, False)
+controller_1 = Controller(PRIMARY)
+1_1_2 = Motor(Ports.PORT1, GearSetting.RATIO_18_1, False)
+1_1_2 = Motor(Ports.PORT10, GearSetting.RATIO_18_1, True)
+
 myVariable = 0
 S = 0
 Automonus = Event()
