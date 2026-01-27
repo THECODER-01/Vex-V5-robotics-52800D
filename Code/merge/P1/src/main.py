@@ -2,14 +2,15 @@
 #                                                                              #
 # 	Module:       main.py                                                      #
 # 	Author:       Nolan N                                                      #
-# 	Description:  V5 project                                                   #
+# 	Description:  V5 project (R2.D2)                                           #
 #                                                                              #
 # ---------------------------------------------------------------------------- #
-
-# Additons to commit:
-# 
-#
-#
+#   Additons to commit:                                                        #
+#                                                                              # 
+#   None                                                                       #
+#   None                                                                       # 
+#                                                                              # 
+# ---------------------------------------------------------------------------- #
 
 # Library imports
 from vex import *
