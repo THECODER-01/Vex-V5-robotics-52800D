@@ -6,12 +6,18 @@
 #                                                                              #
 # ---------------------------------------------------------------------------- #
 
+# Additons to commit:
+# 
+#
+#
+
 # Library imports
 from vex import *
 
 # Brain should be defined by default
 brain=Brain()
 
+# Define Primary Controller (  Add Controller 2 if needed with: controller_2 = Controller(PARTNER)  )
 controller_1 = Controller(PRIMARY)
 
 # Create the left Motors and group them under the MotorGroup "left_motors"
@@ -27,11 +33,15 @@ right_motor_b = Motor(Ports.PORT20, GearSetting.RATIO_18_1, True)
 right_motors = MotorGroup(right_motor_f, right_motor_b)
 
 # (Optional) Create an Inertial Sensor for a SmartDrive
-brain_inertial = Inertial(brain.three_wire_port.h)
+# brain_inertial = Inertial(brain.three_wire_port.h)
+# (Optional) Create an GPS Sensor for a SmartDrive
+gps_sensor = Gps(brain.three_wire_port.h)
+gps_sensor.calibrate()
+gps_sensor.quality(100)
 
 # Construct a 4-Motor Drivetrain (SmartDrive is used with an Inertial Sensor)
 # The values (wheel travel, track width, etc.) should be adjusted for your specific robot
-drivetrain = SmartDrive(left_motors, right_motors, brain_inertial, 101.6, 317.5, 431.8, MM, 1)
+drivetrain = SmartDrive(left_motors, right_motors, gps_sensor, 101.6, 317.5, 431.8, MM, 1)
 
 # Example usage:
 # drivetrain.drive_for(FORWARD, 12, INCHES)
@@ -40,6 +50,9 @@ drivetrain = SmartDrive(left_motors, right_motors, brain_inertial, 101.6, 317.5,
 # You can also use other axes for arcade or split arcade control
 left_power = controller_1.axis3.position()
 right_power = controller_1.axis2.position() # Or axis3 and axis4 for specific styles
+
+# Calibrate the drivetrain
+calibrate_drivetrain()
 
 # intake motor
 motor_12 = Motor(Ports.PORT12, GearSetting.RATIO_18_1, False)
@@ -52,7 +65,10 @@ motor_14 = Motor(Ports.PORT14, GearSetting.RATIO_18_1, False)
 
 # Define a 3-wire digital output on port F
 # Supported ports are Brain.three_wire_port.a through h
-pneumatic_flap = DigitalOut(brain.three_wire_port.f)
+# pneumatic_flap = DigitalOut(brain.three_wire_port.f)
+
+# Define a 3-wire digital output Pneumatic on port F
+pneumatic_flap = Pneumatics(brain.three_wire_port.f)
 
 # Define a 3-wire Bumper on port A
 bumper_a = Bumper(brain.three_wire_port.a)
@@ -112,10 +128,14 @@ def onauton_autonomous_0():
     motor_12.set_velocity(120, PERCENT)
     motor_13.set_velocity(120, PERCENT)
     motor_14.set_velocity(120, PERCENT)
+    pneumatic_flap.close()
+    pneumatic_flap.open()
     Automonus.broadcast()
 
 def ondriver_drivercontrol_0():
     global Bottom, Top, O12B, Bottom, O12F, O12S, AStop, PH, PL, PM, Keep_Code
+    pneumatic_flap.close()
+    pneumatic_flap.open()
     drivetrain.set_drive_velocity(80, PERCENT)
     drivetrain.set_turn_velocity(80, PERCENT)
     motor_12.set_velocity(120, PERCENT)
@@ -184,15 +204,15 @@ def AStop_callback_0():
 
 def PH_callback_0():
     global Bottom, Top, O12B, Bottom, O12F, O12S, AStop, PH, PL, PM, Keep_Code
-    pneumatic_flap.set(True)
+    pneumatic_flap.open()
     wait(0.3, SECONDS)
-    # Pneumatic High (Goal)
+    # Pneumatic High/open (Goal)
 
 def PL_callback_0():
     global Bottom, Top, O12B, Bottom, O12F, O12S, AStop, PH, PL, PM, Keep_Code
-    pneumatic_flap.set(False)
+    pneumatic_flap.close()
     wait(0.3, SECONDS)
-    # Pneumatic Low (Jail)
+    # Pneumatic Low/close (Jail)
 
 def Keep_Code_callback_0():
     global Bottom, Top, O12B, Bottom, O12F, O12S, AStop, PH, PL, PM, Keep_Code
