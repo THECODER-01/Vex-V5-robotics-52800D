@@ -142,11 +142,10 @@ def ondriver_drivercontrol_0():
     motor_13.set_velocity(120, PERCENT)
     motor_14.set_velocity(120, PERCENT)
     while True:
-
         # Spin motor groups based on controller input
         left_motors.spin(FORWARD, left_power, PERCENT)
         right_motors.spin(FORWARD, right_power, PERCENT)
-
+        # \/ Button controls for motors and pneumatics + events \/
         if controller_1.buttonL1.pressing():
             Top.broadcast()
         if controller_1.buttonL2.pressing():
