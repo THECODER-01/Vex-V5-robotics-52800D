@@ -8,7 +8,7 @@
 #   Additons to commit:                                                        #
 #                                                                              # 
 #   GET MACBOOK                                                                #
-#   None                                                                       # 
+#   Push to all branches                                                       # 
 #                                                                              # 
 # ---------------------------------------------------------------------------- #
 
