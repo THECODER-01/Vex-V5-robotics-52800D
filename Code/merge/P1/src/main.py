@@ -47,11 +47,6 @@ drivetrain = SmartDrive(left_motors, right_motors, gps_sensor, 101.6, 317.5, 431
 # Example usage:
 # drivetrain.drive_for(FORWARD, 12, INCHES)
 
-# Get joystick values (Axis 3 for forward/reverse, Axis 1 for turning)
-# You can also use other axes for arcade or split arcade control
-left_power = controller_1.axis3.position()
-right_power = controller_1.axis2.position() # Or axis3 and axis4 for specific styles
-
 # Calibrate the drivetrain
 calibrate_drivetrain()
 
@@ -143,6 +138,10 @@ def ondriver_drivercontrol_0():
     motor_13.set_velocity(120, PERCENT)
     motor_14.set_velocity(120, PERCENT)
     while True:
+        # Get joystick values (Axis 3 for forward/reverse, Axis 1 for turning)
+        # You can also use other axes for arcade or split arcade control
+        left_power = controller_1.axis3.position()
+        right_power = controller_1.axis2.position() # Or axis3 and axis4 for specific styles
         # Spin motor groups based on controller input
         left_motors.spin(FORWARD, left_power, PERCENT)
         right_motors.spin(FORWARD, right_power, PERCENT)
@@ -266,4 +265,5 @@ Keep_Code(Keep_Code_callback_0)
 AStop(AStop_callback_0)
 
 # add 15ms delay to make sure events are registered correctly.
+
 wait(15, MSEC)
