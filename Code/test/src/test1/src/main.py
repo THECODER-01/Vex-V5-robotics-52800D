@@ -38,7 +38,7 @@ right_motors = MotorGroup(right_motor_f, right_motor_b)
 # (Optional) Create an Gyro Sensor for a SmartDrive
 Gyro_sensor = Gyro(brain.three_wire_port.h)
 Gyro_sensor.calibrate()
-Gyro_sensor.quality(100)
+# Gyro_sensor.quality(100)
 
 # Construct a 4-Motor Drivetrain (SmartDrive is used with an Inertial Sensor)
 # The values (wheel travel, track width, etc.) should be adjusted for your specific robot
@@ -48,7 +48,7 @@ drivetrain = SmartDrive(left_motors, right_motors, Gyro_sensor, 101.6, 317.5, 43
 # drivetrain.drive_for(FORWARD, 12, INCHES)
 
 # Calibrate the drivetrain
-calibrate_drivetrain()
+# calibrate_drivetrain()
 
 # intake motor
 motor_12 = Motor(Ports.PORT12, GearSetting.RATIO_18_1, False)
