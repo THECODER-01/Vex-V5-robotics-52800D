@@ -96,22 +96,22 @@ def Automonus_callback_0():
     global myVariable, S, Automonus, Bottom, Top, O12B, Bottom, O12F, O12S, AStop, PH, PL, PM, Keep_Code
     if bumper_a.pressing():
         # Right side
-        drivetrain.drive_for(FORWARD, 500, MM)
+        drivetrain.drive_for(FORWARD, 400, MM)
         drivetrain.turn_for(RIGHT, 90, DEGREES)
-        drivetrain.drive_for(FORWARD, 900, MM)
+        drivetrain.drive_for(FORWARD, 756, MM)
         drivetrain.turn_for(LEFT, 90, DEGREES)
-        drivetrain.drive_for(FORWARD, 600, MM, wait=False)
+        drivetrain.drive_for(FORWARD, 250, MM, wait=False)
         AUTOP.broadcast()
         # Intake on
         # Top goal
         wait(8, SECONDS)
     else:
         # Left side
-        drivetrain.drive_for(FORWARD, 500, MM)
+        drivetrain.drive_for(FORWARD, 400, MM)
         drivetrain.turn_for(LEFT, 90, DEGREES)
-        drivetrain.drive_for(FORWARD, 900, MM)
+        drivetrain.drive_for(FORWARD, 756, MM)
         drivetrain.turn_for(RIGHT, 90, DEGREES)
-        drivetrain.drive_for(FORWARD, 600, MM, wait=False)
+        drivetrain.drive_for(FORWARD, 250, MM, wait=False)
         AUTOP.broadcast()
         # Intake on
         # Top goal
