@@ -22,11 +22,6 @@ brain=Brain()
 # Define Primary Controller (  Add Controller 2 if needed with: controller_2 = Controller(PARTNER)  )
 controller_1 = Controller(PRIMARY)
 
-# Get joystick values (Axis 3 for forward/reverse, Axis 1 for turning)
-# You can also use other axes for arcade or split arcade control
-left_power = controller_1.axis3.position()
-right_power = controller_1.axis2.position() # Or axis3 and axis4 for specific styles
-
 # Create the left Motors and group them under the MotorGroup "left_motors"
 # The 'True' argument in a Motor definition reverses its direction if needed
 left_motor_f = Motor(Ports.PORT1, GearSetting.RATIO_18_1, False)
@@ -84,6 +79,13 @@ bumper_a = Bumper(brain.three_wire_port.a)
 
 #1_1_2 = Motor(Ports.PORT10, GearSetting.RATIO_18_1, True)
 
+# Get joystick values (Axis 3 for forward/reverse, Axis 1 for turning)
+# You can also use other axes for arcade or split arcade control
+left_power = controller_1.axis3.position()
+right_power = controller_1.axis2.position() # Or axis3 and axis4 for specific styles
+
+# add something here
+
 Top = Event()
 O12B = Event()
 Bottom = Event()
@@ -129,14 +131,14 @@ def onauton_autonomous_0():
     motor_12.set_velocity(120, PERCENT)
     motor_13.set_velocity(120, PERCENT)
     motor_14.set_velocity(120, PERCENT)
-    pneumatic_flap.close()
-    pneumatic_flap.open()
+    pneumatic_flap.close() # Intentional: close then open quickly to straighten the flap and move any linked parts into their starting positions
+    pneumatic_flap.open() # Intentional: close then open quickly to straighten the flap and move any linked parts into their starting positions
     Automonus.broadcast()
 
 def ondriver_drivercontrol_0():
     global Bottom, Top, O12B, O12F, O12S, AStop, PH, PL, place_Holder, Keep_Code
-    pneumatic_flap.close()
-    pneumatic_flap.open()
+    pneumatic_flap.close() # Intentional: close then open quickly to straighten the flap and move any linked parts into their starting positions
+    pneumatic_flap.open() # Intentional: close then open quickly to straighten the flap and move any linked parts into their starting positions
     drivetrain.set_drive_velocity(80, PERCENT)
     drivetrain.set_turn_velocity(80, PERCENT)
     motor_12.set_velocity(120, PERCENT)
