@@ -85,6 +85,12 @@ bumper_a = Bumper(brain.three_wire_port.a)
 # right_power = controller_1.axis2.position() # Or axis3 and axis4 for specific styles
 # add something here
 
+# 1:400, 2:756, 3:250
+auto_at_start: false
+F1 = 400
+F2 = 756
+F3 = 250
+
 Top = Event()
 O12B = Event()
 Bottom = Event()
@@ -100,24 +106,26 @@ place_Holder = Event()
 
 def Automonus_callback_0():
     global Automonus, Bottom, Top, O12B, O12F, O12S, AStop, PH, PL, place_Holder, Keep_Code
+    if auto_at_start true:
+        pass
     if bumper_a.pressing():
         # Right side
-        drivetrain.drive_for(FORWARD, 400, MM)
+        drivetrain.drive_for(FORWARD, F1, MM)
         drivetrain.turn_for(RIGHT, 90, DEGREES)
-        drivetrain.drive_for(FORWARD, 756, MM)
+        drivetrain.drive_for(FORWARD, F2, MM)
         drivetrain.turn_for(LEFT, 90, DEGREES)
-        drivetrain.drive_for(FORWARD, 250, MM, wait=False)
+        drivetrain.drive_for(FORWARD, F3, MM, wait=False)
         AUTOP.broadcast()
         # Intake on
         # Top goal
         wait(8, SECONDS)
     else:
         # Left side
-        drivetrain.drive_for(FORWARD, 400, MM)
+        drivetrain.drive_for(FORWARD, F1, MM)
         drivetrain.turn_for(LEFT, 90, DEGREES)
-        drivetrain.drive_for(FORWARD, 756, MM)
+        drivetrain.drive_for(FORWARD, F2, MM)
         drivetrain.turn_for(RIGHT, 90, DEGREES)
-        drivetrain.drive_for(FORWARD, 250, MM, wait=False)
+        drivetrain.drive_for(FORWARD, F3, MM, wait=False)
         AUTOP.broadcast()
         # Intake on
         # Top goal
