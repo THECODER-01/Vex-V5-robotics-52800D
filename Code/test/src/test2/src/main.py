@@ -81,9 +81,8 @@ bumper_a = Bumper(brain.three_wire_port.a)
 
 # Get joystick values (Axis 3 for forward/reverse, Axis 1 for turning)
 # You can also use other axes for arcade or split arcade control
-left_power = controller_1.axis3.position()
-right_power = controller_1.axis2.position() # Or axis3 and axis4 for specific styles
-
+# left_power = controller_1.axis3.position()
+# right_power = controller_1.axis2.position() # Or axis3 and axis4 for specific styles
 # add something here
 
 Top = Event()
@@ -145,6 +144,11 @@ def ondriver_drivercontrol_0():
     motor_13.set_velocity(120, PERCENT)
     motor_14.set_velocity(120, PERCENT)
     while True:
+        # Get joystick values (Axis 3 for forward/reverse, Axis 1 for turning)
+        # You can also use other axes for arcade or split arcade control
+        # Read controller axes each loop so values update continuously
+        left_power = controller_1.axis3.position()
+        right_power = controller_1.axis2.position() # Or axis3 and axis4 for specific styles
         # Spin motor groups based on controller input
         left_motors.spin(FORWARD, left_power, PERCENT)
         right_motors.spin(FORWARD, right_power, PERCENT)
@@ -167,7 +171,7 @@ def ondriver_drivercontrol_0():
             Keep_Code.broadcast()
         if controller_1.buttonY.pressing():
             O12B.broadcast()
-        wait(30, MSEC)
+        wait(5, MSEC)
 
 def Top_callback_0():
     global Bottom, Top, O12B, O12F, O12S, AStop, PH, PL, place_Holder, Keep_Code
