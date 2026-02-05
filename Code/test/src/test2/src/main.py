@@ -2,12 +2,13 @@
 #                                                                              #
 # 	Module:       main.py                                                      #
 # 	Author:       Nolan N                                                      #
-# 	Description:  V5 project (R2.D2)                                           #
+# 	Description:  V5 project (R2.D2)  V.Latest                                 #
 #                                                                              #
 # ---------------------------------------------------------------------------- #
 #   Additons to commit:                                                        #
-#                                                                              # 
-#   GET MACBOOK                                                                #
+#                                                                              #
+#   edited pm to place holder, Event registration syntax is correct, Motor spin without stops syntax exempt to robot design, and Contradictory pneumatic ops is for straitening flap and moving parts else where (add a comment for that)  # 
+#                                                                              #
 #   Push to all branches                                                       # 
 #                                                                              # 
 # ---------------------------------------------------------------------------- #
@@ -20,6 +21,11 @@ brain=Brain()
 
 # Define Primary Controller (  Add Controller 2 if needed with: controller_2 = Controller(PARTNER)  )
 controller_1 = Controller(PRIMARY)
+
+# Get joystick values (Axis 3 for forward/reverse, Axis 1 for turning)
+# You can also use other axes for arcade or split arcade control
+left_power = controller_1.axis3.position()
+right_power = controller_1.axis2.position() # Or axis3 and axis4 for specific styles
 
 # Create the left Motors and group them under the MotorGroup "left_motors"
 # The 'True' argument in a Motor definition reverses its direction if needed
@@ -38,7 +44,8 @@ right_motors = MotorGroup(right_motor_f, right_motor_b)
 # (Optional) Create an Gyro Sensor for a SmartDrive
 Gyro_sensor = Gyro(brain.three_wire_port.h)
 Gyro_sensor.calibrate()
-Gyro_sensor.quality(100)
+Gyro_sensor.set_heading(0, DEGREES)
+# Gyro_sensor.quality(100)
 
 # Construct a 4-Motor Drivetrain (SmartDrive is used with an Inertial Sensor)
 # The values (wheel travel, track width, etc.) should be adjusted for your specific robot
@@ -48,7 +55,7 @@ drivetrain = SmartDrive(left_motors, right_motors, Gyro_sensor, 101.6, 317.5, 43
 # drivetrain.drive_for(FORWARD, 12, INCHES)
 
 # Calibrate the drivetrain
-calibrate_drivetrain()
+# calibrate_drivetrain()
 
 # intake motor
 motor_12 = Motor(Ports.PORT12, GearSetting.RATIO_18_1, False)
@@ -87,13 +94,11 @@ PH = Event()
 PL = Event()
 Keep_Code = Event()
 AUTOP = Event()
-
-myVariable = 0
-S = 0
 Automonus = Event()
+place_Holder = Event()
 
 def Automonus_callback_0():
-    global myVariable, S, Automonus, Bottom, Top, O12B, Bottom, O12F, O12S, AStop, PH, PL, PM, Keep_Code
+    global Automonus, Bottom, Top, O12B, O12F, O12S, AStop, PH, PL, place_Holder, Keep_Code
     if bumper_a.pressing():
         # Right side
         drivetrain.drive_for(FORWARD, 400, MM)
@@ -118,7 +123,7 @@ def Automonus_callback_0():
         wait(8, SECONDS)
 
 def onauton_autonomous_0():
-    global myVariable, S, Automonus, Bottom, Top, O12B, Bottom, O12F, O12S, AStop, PH, PL, PM, Keep_Code
+    global Automonus, Bottom, Top, O12B, O12F, O12S, AStop, PH, PL, place_Holder, Keep_Code
     drivetrain.set_drive_velocity(46, PERCENT)
     drivetrain.set_turn_velocity(46, PERCENT)
     motor_12.set_velocity(120, PERCENT)
@@ -129,7 +134,7 @@ def onauton_autonomous_0():
     Automonus.broadcast()
 
 def ondriver_drivercontrol_0():
-    global Bottom, Top, O12B, Bottom, O12F, O12S, AStop, PH, PL, PM, Keep_Code
+    global Bottom, Top, O12B, O12F, O12S, AStop, PH, PL, place_Holder, Keep_Code
     pneumatic_flap.close()
     pneumatic_flap.open()
     drivetrain.set_drive_velocity(80, PERCENT)
@@ -138,10 +143,6 @@ def ondriver_drivercontrol_0():
     motor_13.set_velocity(120, PERCENT)
     motor_14.set_velocity(120, PERCENT)
     while True:
-        # Get joystick values (Axis 3 for forward/reverse, Axis 1 for turning)
-        # You can also use other axes for arcade or split arcade control
-        left_power = controller_1.axis3.position()
-        right_power = controller_1.axis2.position() # Or axis3 and axis4 for specific styles
         # Spin motor groups based on controller input
         left_motors.spin(FORWARD, left_power, PERCENT)
         right_motors.spin(FORWARD, right_power, PERCENT)
@@ -164,68 +165,73 @@ def ondriver_drivercontrol_0():
             Keep_Code.broadcast()
         if controller_1.buttonY.pressing():
             O12B.broadcast()
-        wait(0.1, SECONDS)
-        wait(5, MSEC)
+        wait(30, MSEC)
 
 def Top_callback_0():
-    global Bottom, Top, O12B, Bottom, O12F, O12S, AStop, PH, PL, PM, Keep_Code
+    global Bottom, Top, O12B, O12F, O12S, AStop, PH, PL, place_Holder, Keep_Code
     motor_13.spin(FORWARD)
     motor_14.spin(FORWARD)
     # Top goal
 
 def Bottom_callback_0():
-    global Bottom, Top, O12B, Bottom, O12F, O12S, AStop, PH, PL, PM, Keep_Code
+    global Bottom, Top, O12B, O12F, O12S, AStop, PH, PL, place_Holder, Keep_Code
     motor_13.spin(REVERSE)
     motor_14.stop()
     # Bottom goal
 
 def O12F_callback_0():
-    global Bottom, Top, O12B, Bottom, O12F, O12S, AStop, PH, PL, PM, Keep_Code
+    global Bottom, Top, O12B, O12F, O12S, AStop, PH, PL, place_Holder, Keep_Code
     motor_12.spin(FORWARD)
     # This only moves M12
 
 def O12S_callback_0():
-    global Bottom, Top, O12B, Bottom, O12F, O12S, AStop, PH, PL, PM, Keep_Code
+    global Bottom, Top, O12B, O12F, O12S, AStop, PH, PL, place_Holder, Keep_Code
     motor_12.stop()
     # This only stops M12
 
 def O12B_callback_0():
-    global Bottom, Top, O12B, Bottom, O12F, O12S, AStop, PH, PL, PM, Keep_Code
+    global Bottom, Top, O12B, O12F, O12S, AStop, PH, PL, place_Holder, Keep_Code
     motor_12.spin(REVERSE)
     # This only moves M12
 
 def AStop_callback_0():
-    global Bottom, Top, O12B, Bottom, O12F, O12S, AStop, PH, PL, PM, Keep_Code
+    global Bottom, Top, O12B, O12F, O12S, AStop, PH, PL, place_Holder, Keep_Code
     motor_12.stop()
     motor_13.stop()
     motor_14.stop()
     # This stops All motors
 
 def PH_callback_0():
-    global Bottom, Top, O12B, Bottom, O12F, O12S, AStop, PH, PL, PM, Keep_Code
+    global Bottom, Top, O12B, O12F, O12S, AStop, PH, PL, place_Holder, Keep_Code
     pneumatic_flap.open()
     wait(0.3, SECONDS)
     # Pneumatic High/open (Goal)
 
 def PL_callback_0():
-    global Bottom, Top, O12B, Bottom, O12F, O12S, AStop, PH, PL, PM, Keep_Code
+    global Bottom, Top, O12B, O12F, O12S, AStop, PH, PL, place_Holder, Keep_Code
     pneumatic_flap.close()
     wait(0.3, SECONDS)
     # Pneumatic Low/close (Jail)
 
 def Keep_Code_callback_0():
-    global Bottom, Top, O12B, Bottom, O12F, O12S, AStop, PH, PL, PM, Keep_Code
+    global Bottom, Top, O12B, O12F, O12S, AStop, PH, PL, place_Holder, Keep_Code
     motor_12.spin(FORWARD)
     motor_13.spin(FORWARD)
     motor_14.stop()
     # Keep_Code
 
 def AUTOP_callback_0():
-    global Bottom, Top, O12B, Bottom, O12F, O12S, AStop, PH, PL, PM, Keep_Code
+    global Bottom, Top, O12B, O12F, O12S, AStop, PH, PL, place_Holder, Keep_Code
     motor_12.spin(FORWARD)
     motor_13.spin(FORWARD)
     motor_14.spin(FORWARD)
     # For auntom code
+
+def place_Holder_callback_0():
+    global Bottom, Top, O12B, O12F, O12S, AStop, PH, PL, place_Holder, Keep_Code
+    # This is a place holder for any future events or code you may want to add
+    # You can also use this event for testing or development purposes with out being tied to a specific button or action
+    pass
 
 # create a function for handling the starting and stopping of all autonomous tasks
 def vexcode_auton_function():
@@ -263,7 +269,8 @@ PH(PH_callback_0)
 O12S(O12S_callback_0)
 Keep_Code(Keep_Code_callback_0)
 AStop(AStop_callback_0)
+AUTOP(AUTOP_callback_0)
+place_Holder(place_Holder_callback_0)
 
 # add 15ms delay to make sure events are registered correctly.
-
 wait(15, MSEC)
