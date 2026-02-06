@@ -90,6 +90,7 @@ auto_at_start = False
 F1 = 400
 F2 = 756
 F3 = 250
+TT = 180
 
 Top = Event()
 O12B = Event()
@@ -111,9 +112,9 @@ def Automonus_callback_0():
         if bumper_a.pressing():
             # Right side
             drivetrain.drive_for(FORWARD, F1, MM)
-            drivetrain.turn_for(RIGHT, 90, DEGREES)
+            drivetrain.turn_for(RIGHT, TT/2, DEGREES)
             drivetrain.drive_for(FORWARD, F2, MM)
-            drivetrain.turn_for(LEFT, 90, DEGREES)
+            drivetrain.turn_for(LEFT, TT/2, DEGREES)
             drivetrain.drive_for(FORWARD, F3, MM, wait=False)
             AUTOP.broadcast()
             # Intake on
