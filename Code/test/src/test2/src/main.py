@@ -44,7 +44,7 @@ Gyro_sensor.set_heading(0, DEGREES)
 
 # Construct a 4-Motor Drivetrain (SmartDrive is used with an Inertial Sensor)
 # The values (wheel travel, track width, etc.) should be adjusted for your specific robot
-drivetrain = SmartDrive(left_motors, right_motors, Gyro_sensor, 101.6, 317.5, 431.8, MM, 1)
+drivetrain = SmartDrive(left_motors, right_motors, Gyro_sensor, 319.19, 317.5, 431.8, MM, 1)
 
 # Example usage:
 # drivetrain.drive_for(FORWARD, 12, INCHES)
