@@ -86,7 +86,7 @@ bumper_a = Bumper(brain.three_wire_port.a)
 # add something here
 
 # 1:400, 2:756, 3:250
-auto_at_start = False
+auto_at_start = True # Set to False to disable the autonomous code in the Automonus event
 F1 = 400
 F2 = 756
 F3 = 250
