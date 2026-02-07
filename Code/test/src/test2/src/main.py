@@ -39,7 +39,7 @@ right_motors = MotorGroup(right_motor_f, right_motor_b)
 # (Optional) Create an Gyro Sensor for a SmartDrive
 Gyro_sensor = Gyro(brain.three_wire_port.h)
 Gyro_sensor.calibrate()
-wait(2, SECONDS) # Wait for calibration to complete
+wait(4, SECONDS) # Wait for calibration to complete
 Gyro_sensor.set_heading(0, DEGREES)
 # Gyro_sensor.quality(100)
 
