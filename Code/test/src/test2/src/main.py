@@ -39,6 +39,7 @@ right_motors = MotorGroup(right_motor_f, right_motor_b)
 # (Optional) Create an Gyro Sensor for a SmartDrive
 Gyro_sensor = Gyro(brain.three_wire_port.h)
 Gyro_sensor.calibrate()
+wait(2, SECONDS) # Wait for calibration to complete
 Gyro_sensor.set_heading(0, DEGREES)
 # Gyro_sensor.quality(100)
 
@@ -112,10 +113,10 @@ def Automonus_callback_0():
             # Right side
             drivetrain.drive_for(FORWARD, F1, MM, wait=True)
             drivetrain.turn_for(RIGHT, 90, DEGREES, wait=True)
-            Gyro_sensor.set_rotation(0, DEGREES) # Reset the gyro heading to 0 after the turn to ensure accurate subsequent turns
+            # Gyro_sensor.set_rotation(0, DEGREES) # Reset the gyro heading to 0 after the turn to ensure accurate subsequent turns
             drivetrain.drive_for(FORWARD, F2, MM , wait=True)
             drivetrain.turn_for(LEFT, 90, DEGREES, wait=True)
-            Gyro_sensor.set_rotation(0, DEGREES) # Reset the gyro heading to 0 after the turn to ensure accurate subsequent turns
+            # Gyro_sensor.set_rotation(0, DEGREES) # Reset the gyro heading to 0 after the turn to ensure accurate subsequent turns
             drivetrain.drive_for(FORWARD, F3, MM, wait=False)
             AUTOP.broadcast()
             # Intake on
