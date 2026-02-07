@@ -86,11 +86,11 @@ bumper_a = Bumper(brain.three_wire_port.a)
 # add something here
 
 # 1:400, 2:756, 3:250
-auto_at_start = True # Set to False to disable the autonomous code in the Automonus event
+auto_at_start = False # Set to False to disable the autonomous code in the Automonus event
 F1 = 400
 F2 = 756
 F3 = 250
-TT = 180
+# TT = 180
 
 Top = Event()
 O12B = Event()
@@ -111,10 +111,10 @@ def Automonus_callback_0():
         pass
         if bumper_a.pressing():
             # Right side
-            drivetrain.drive_for(FORWARD, F1, MM)
-            drivetrain.turn_for(RIGHT, TT/2, DEGREES)
-            drivetrain.drive_for(FORWARD, F2, MM)
-            drivetrain.turn_for(LEFT, TT/2, DEGREES)
+            drivetrain.drive_for(FORWARD, F1, MM, wait=True)
+            drivetrain.turn_for(RIGHT, 90, DEGREES, wait=True)
+            drivetrain.drive_for(FORWARD, F2, MM , wait=True)
+            drivetrain.turn_for(LEFT, 90, DEGREES, wait=True)
             drivetrain.drive_for(FORWARD, F3, MM, wait=False)
             AUTOP.broadcast()
             # Intake on
@@ -122,10 +122,10 @@ def Automonus_callback_0():
             wait(4, SECONDS)
         else:
             # Left side
-            drivetrain.drive_for(FORWARD, F1, MM)
-            drivetrain.turn_for(LEFT, 90, DEGREES)
-            drivetrain.drive_for(FORWARD, F2, MM)
-            drivetrain.turn_for(RIGHT, 90, DEGREES)
+            drivetrain.drive_for(FORWARD, F1, MM, wait=True)
+            drivetrain.turn_for(LEFT, 90, DEGREES, wait=True)
+            drivetrain.drive_for(FORWARD, F2, MM, wait=True)
+            drivetrain.turn_for(RIGHT, 90, DEGREES, wait=True)
             drivetrain.drive_for(FORWARD, F3, MM, wait=False)
             AUTOP.broadcast()
             # Intake on
