@@ -107,8 +107,7 @@ place_Holder = Event()
 
 def Automonus_callback_0():
     global Automonus, Bottom, Top, O12B, O12F, O12S, AStop, PH, PL, place_Holder, Keep_Code
-    if auto_at_start == False:
-        pass
+    if auto_at_start == True:
         if bumper_a.pressing():
             # Right side
             drivetrain.drive_for(FORWARD, F1, MM, wait=True)
