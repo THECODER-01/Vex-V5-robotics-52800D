@@ -38,10 +38,6 @@ right_motors = MotorGroup(right_motor_f, right_motor_b)
 # brain_inertial = Inertial(brain.three_wire_port.h)
 # (Optional) Create an Gyro Sensor for a SmartDrive
 Gyro_sensor = Gyro(brain.three_wire_port.h)
-Gyro_sensor.calibrate()
-while drivetrain.drive_methods.inertial.is_calibrating():
-        sleep(50) # Wait for calibration to complete
-Gyro_sensor.set_heading(0, DEGREES)
 # Gyro_sensor.quality(100)
 
 # Construct a 4-Motor Drivetrain (SmartDrive is used with an Inertial Sensor)
@@ -107,29 +103,43 @@ AUTOP = Event()
 Automonus = Event()
 place_Holder = Event()
 
+def pre_auton():
+    # Calibrate the Gyro_sensor Sensor
+    brain.screen.print("Calibrating Gyro_sensor Sensor...")
+    Gyro_sensor.calibrate() # Calibrates the sensor
+    while Gyro_sensor.is_calibrating():
+        sleep(50) # Wait for calibration to complete
+    brain.screen.clear_screen(Color.BLACK)
+    brain.screen.print("Calibration Complete")
+
+    # Set the robot's Gyro_sensor heading to zero
+    Gyro_sensor.set_heading(0, DEGREES)
+
+# Autonomous control function
+
 def Automonus_callback_0():
     global Automonus, Bottom, Top, O12B, O12F, O12S, AStop, PH, PL, place_Holder, Keep_Code
     if auto_at_start == True:
         if bumper_a.pressing():
-            # Right side
+            # right side
             drivetrain.drive_for(FORWARD, F1, MM, wait=True)
-            drivetrain.turn_for(RIGHT, 90, DEGREES, wait=True)
-            Gyro_sensor.set_rotation(0, DEGREES) # Reset the gyro heading to 0 after the turn to ensure accurate subsequent turns
-            drivetrain.drive_for(FORWARD, F2, MM , wait=True)
-            drivetrain.turn_for(LEFT, 90, DEGREES, wait=True)
-            Gyro_sensor.set_rotation(0, DEGREES) # Reset the gyro heading to 0 after the turn to ensure accurate subsequent turns
+            drivetrain.turn_to_heading(90, DEGREES, wait=True)
+            # Gyro_sensor.set_rotation(0, DEGREES) # Reset the gyro heading to 0 after the turn to ensure accurate subsequent turns
+            drivetrain.drive_for(FORWARD, F2, MM, wait=True)
+            drivetrain.turn_to_heading(0, DEGREES, wait=True)
+            # Gyro_sensor.set_rotation(0, DEGREES) # Reset the gyro heading to 0 after the turn to ensure accurate subsequent turns
             drivetrain.drive_for(FORWARD, F3, MM, wait=False)
             AUTOP.broadcast()
             # Intake on
             # Top goal
             wait(4, SECONDS)
         else:
-            # Left side
+           # right side
             drivetrain.drive_for(FORWARD, F1, MM, wait=True)
-            drivetrain.turn_to_heading(LEFT, 90, DEGREES, wait=True)
+            drivetrain.turn_to_heading(90, DEGREES, wait=True)
             # Gyro_sensor.set_rotation(0, DEGREES) # Reset the gyro heading to 0 after the turn to ensure accurate subsequent turns
             drivetrain.drive_for(FORWARD, F2, MM, wait=True)
-            drivetrain.turn_to_heading(RIGHT, 90, DEGREES, wait=True)
+            drivetrain.turn_to_heading(0, DEGREES, wait=True)
             # Gyro_sensor.set_rotation(0, DEGREES) # Reset the gyro heading to 0 after the turn to ensure accurate subsequent turns
             drivetrain.drive_for(FORWARD, F3, MM, wait=False)
             AUTOP.broadcast()
@@ -144,20 +154,21 @@ def onauton_autonomous_0():
     motor_12.set_velocity(120, PERCENT)
     motor_13.set_velocity(120, PERCENT)
     motor_14.set_velocity(120, PERCENT)
-    pneumatic_flap.close() # Intentional: close then open quickly to straighten the flap and move any linked parts into their starting positions
     pneumatic_flap.open() # Intentional: close then open quickly to straighten the flap and move any linked parts into their starting positions
+    pneumatic_flap.close() # Intentional: close then open quickly to straighten the flap and move any linked parts into their starting positions
     Automonus.broadcast()
 
 def ondriver_drivercontrol_0():
     global Bottom, Top, O12B, O12F, O12S, AStop, PH, PL, place_Holder, Keep_Code
-    pneumatic_flap.close() # Intentional: close then open quickly to straighten the flap and move any linked parts into their starting positions
     pneumatic_flap.open() # Intentional: close then open quickly to straighten the flap and move any linked parts into their starting positions
+    pneumatic_flap.close() # Intentional: close then open quickly to straighten the flap and move any linked parts into their starting positions
     drivetrain.set_drive_velocity(80, PERCENT)
     drivetrain.set_turn_velocity(80, PERCENT)
     motor_12.set_velocity(120, PERCENT)
     motor_13.set_velocity(120, PERCENT)
     motor_14.set_velocity(120, PERCENT)
     while True:
+        print(Gyro_sensor.heading(DEGREES))
         # Get joystick values (Axis 3 for forward/reverse, Axis 1 for turning)
         # You can also use other axes for arcade or split arcade control
         # Read controller axes each loop so values update continuously
@@ -292,5 +303,6 @@ AStop(AStop_callback_0)
 AUTOP(AUTOP_callback_0)
 place_Holder(place_Holder_callback_0)
 
+pre_auton()
 # add 15ms delay to make sure events are registered correctly.
 wait(15, MSEC)
