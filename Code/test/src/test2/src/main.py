@@ -124,23 +124,23 @@ def Automonus_callback_0():
             # right side
             drivetrain.drive_for(FORWARD, F1, MM, wait=True)
             drivetrain.turn_to_heading(90, DEGREES, wait=True)
-            # Gyro_sensor.set_rotation(0, DEGREES) # Reset the gyro heading to 0 after the turn to ensure accurate subsequent turns
+            Gyro_sensor.set_rotation(0, DEGREES) # Reset the gyro heading to 0 after the turn to ensure accurate subsequent turns
             drivetrain.drive_for(FORWARD, F2, MM, wait=True)
-            drivetrain.turn_to_heading(0, DEGREES, wait=True)
-            # Gyro_sensor.set_rotation(0, DEGREES) # Reset the gyro heading to 0 after the turn to ensure accurate subsequent turns
+            drivetrain.turn_to_heading(-90, DEGREES, wait=True)
+            Gyro_sensor.set_rotation(0, DEGREES) # Reset the gyro heading to 0 after the turn to ensure accurate subsequent turns
             drivetrain.drive_for(FORWARD, F3, MM, wait=False)
             AUTOP.broadcast()
             # Intake on
             # Top goal
             wait(4, SECONDS)
         else:
-           # right side
+            # right side
             drivetrain.drive_for(FORWARD, F1, MM, wait=True)
-            drivetrain.turn_to_heading(90, DEGREES, wait=True)
-            # Gyro_sensor.set_rotation(0, DEGREES) # Reset the gyro heading to 0 after the turn to ensure accurate subsequent turns
+            drivetrain.turn_to_heading(-90, DEGREES, wait=True)
+            Gyro_sensor.set_rotation(0, DEGREES) # Reset the gyro heading to 0 after the turn to ensure accurate subsequent turns
             drivetrain.drive_for(FORWARD, F2, MM, wait=True)
-            drivetrain.turn_to_heading(0, DEGREES, wait=True)
-            # Gyro_sensor.set_rotation(0, DEGREES) # Reset the gyro heading to 0 after the turn to ensure accurate subsequent turns
+            drivetrain.turn_to_heading(90, DEGREES, wait=True)
+            Gyro_sensor.set_rotation(0, DEGREES) # Reset the gyro heading to 0 after the turn to ensure accurate subsequent turns
             drivetrain.drive_for(FORWARD, F3, MM, wait=False)
             AUTOP.broadcast()
             # Intake on
