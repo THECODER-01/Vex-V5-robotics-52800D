@@ -83,8 +83,11 @@ bumper_a = Bumper(brain.three_wire_port.a)
 # right_power = controller_1.axis2.position() # Or axis3 and axis4 for specific styles
 # add something here
 
+time01 = 0
+A01 = 1
+
 # 1:400, 2:756, 3:250
-auto_at_start = True # Set to False to disable the autonomous code in the Automonus event
+auto_at_start = None # Set to False to disable the autonomous code in the Automonus event
 F1 = 400
 F2 = 756
 F3 = 250
@@ -103,49 +106,124 @@ AUTOP = Event()
 Automonus = Event()
 place_Holder = Event()
 
+#result1 = start_a00(a=1, b="Calibration Complete")
+#result0 = start_a00(a=-1, b="Calibration Complete")
+
+def start_a00(a, b):
+    global A01
+    A01= A01 + a
+    if A01 == 0:
+        return b + " :: Autonomous Disabled"
+    if A01 == 1:
+        return b + " :: Autonomous Left"
+    if A01 == 2:
+        return b + " :: Autonomous Right"
+    if A01 == 3:
+        return b + " :: Autonomous Skills"
+    if A01 == 4:
+        A01= 0
+    if A01 == -1:
+        A01= 3
+
 def pre_auton():
+    global time01, A01, auto_at_start
     # Calibrate the Gyro_sensor Sensor
     brain.screen.print("Calibrating Gyro_sensor Sensor...")
     Gyro_sensor.calibrate() # Calibrates the sensor
     while Gyro_sensor.is_calibrating():
         sleep(50) # Wait for calibration to complete
     brain.screen.clear_screen(Color.BLACK)
+    wait(10, MSEC) # Short delay after clear screen to ensure the message is visible before it disappears
     brain.screen.print("Calibration Complete")
-
+    wait(60, MSEC)
+    if Gyro_sensor.heading() == 0: # Check if the Gyro_sensor is connected and responding
+        brain.screen.clear_screen(Color.BLACK)
+        brain.screen.new_line()
+        brain.screen.print("FATAL ERROR: Gyro_sensor Sensor not detected.")
+        brain.screen.new_line()
+        brain.screen.print("Please check the connection.")
+        return
     # Set the robot's Gyro_sensor heading to zero
     Gyro_sensor.set_heading(0, DEGREES)
-
-# Autonomous control function
+    while time01 < 10: # Allow 5 seconds for the user to see the calibration complete message before it disappears
+        if controller_1.buttonUp.pressing():
+            brain.screen.clear_screen(Color.BLACK)
+            wait(10, MSEC) # Short delay after clear screen to ensure the message is visible before it disappears
+            brain.screen.print(start_a00(a=-1, b="Calibration Complete"))
+        if controller_1.buttonDown.pressing():
+            brain.screen.clear_screen(Color.BLACK)
+            wait(10, MSEC) # Short delay after clear screen to ensure the message is visible before it disappears
+            brain.screen.print(start_a00(a=-1, b="Calibration Complete"))
+        if A01 == 0:
+            auto_at_start = False
+        if A01 == 1:
+            auto_at_start = True
+        if A01 == 2:
+            auto_at_start = True
+        if A01 == 3:
+            auto_at_start = True
+        wait(100, MSEC) # Check for button presses every 100 milliseconds
+        time01 = time01 + 1
+        # Autonomous control function
 
 def Automonus_callback_0():
     global Automonus, Bottom, Top, O12B, O12F, O12S, AStop, PH, PL, place_Holder, Keep_Code
     if auto_at_start == True:
-        if bumper_a.pressing():
+        if A01 == 2:
             # right side
             drivetrain.drive_for(FORWARD, F1, MM, wait=True)
-            drivetrain.turn_to_heading(90, DEGREES, wait=True)
-            Gyro_sensor.set_rotation(0, DEGREES) # Reset the gyro heading to 0 after the turn to ensure accurate subsequent turns
+            drivetrain.turn_for(RIGHT, 90, DEGREES, wait=True)
             drivetrain.drive_for(FORWARD, F2, MM, wait=True)
-            drivetrain.turn_to_heading(-90, DEGREES, wait=True)
-            Gyro_sensor.set_rotation(0, DEGREES) # Reset the gyro heading to 0 after the turn to ensure accurate subsequent turns
+            drivetrain.turn_for(LEFT, 90, DEGREES, wait=True)
             drivetrain.drive_for(FORWARD, F3, MM, wait=False)
             AUTOP.broadcast()
             # Intake on
             # Top goal
             wait(4, SECONDS)
-        else:
-            # right side
+        if A01 == 1:
+            # left side
             drivetrain.drive_for(FORWARD, F1, MM, wait=True)
-            drivetrain.turn_to_heading(-90, DEGREES, wait=True)
-            Gyro_sensor.set_rotation(0, DEGREES) # Reset the gyro heading to 0 after the turn to ensure accurate subsequent turns
+            drivetrain.turn_for(LEFT, 90, DEGREES, wait=True)
             drivetrain.drive_for(FORWARD, F2, MM, wait=True)
-            drivetrain.turn_to_heading(90, DEGREES, wait=True)
-            Gyro_sensor.set_rotation(0, DEGREES) # Reset the gyro heading to 0 after the turn to ensure accurate subsequent turns
+            drivetrain.turn_for(RIGHT, 90, DEGREES, wait=True)
             drivetrain.drive_for(FORWARD, F3, MM, wait=False)
             AUTOP.broadcast()
             # Intake on
             # Top goal
             wait(4, SECONDS)
+        if A01 == 3:
+            # skills
+            wait(4, SECONDS)
+
+# def Automonus_callback_0():
+#    global Automonus, Bottom, Top, O12B, O12F, O12S, AStop, PH, PL, place_Holder, Keep_Code
+#    if auto_at_start == True:
+#        if bumper_a.pressing():
+#            # right side
+#            drivetrain.drive_for(FORWARD, F1, MM, wait=True)
+#            drivetrain.turn_to_heading(-90, DEGREES, wait=True)
+#            # Gyro_sensor.set_rotation(0, DEGREES) # Reset the gyro heading to 0 after the turn to ensure accurate subsequent turns
+#            drivetrain.drive_for(FORWARD, F2, MM, wait=True)
+#            drivetrain.turn_to_heading(90, DEGREES, wait=True)
+#            # Gyro_sensor.set_rotation(0, DEGREES) # Reset the gyro heading to 0 after the turn to ensure accurate subsequent turns
+#            drivetrain.drive_for(FORWARD, F3, MM, wait=False)
+#            AUTOP.broadcast()
+#            # Intake on
+#            # Top goal
+#            wait(4, SECONDS)
+#        else:
+#            # right side
+#            drivetrain.drive_for(FORWARD, F1, MM, wait=True)
+#            drivetrain.turn_to_heading(90, DEGREES, wait=True)
+#            # Gyro_sensor.set_rotation(0, DEGREES) # Reset the gyro heading to 0 after the turn to ensure accurate subsequent turns
+#            drivetrain.drive_for(FORWARD, F2, MM, wait=True)
+#            drivetrain.turn_to_heading(-90, DEGREES, wait=True)
+#            # Gyro_sensor.set_rotation(0, DEGREES) # Reset the gyro heading to 0 after the turn to ensure accurate subsequent turns
+#            drivetrain.drive_for(FORWARD, F3, MM, wait=False)
+#            AUTOP.broadcast()
+#            # Intake on
+#            # Top goal
+#            wait(4, SECONDS)
 
 def onauton_autonomous_0():
     global Automonus, Bottom, Top, O12B, O12F, O12S, AStop, PH, PL, place_Holder, Keep_Code
