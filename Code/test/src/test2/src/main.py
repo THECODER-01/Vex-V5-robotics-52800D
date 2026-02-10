@@ -136,7 +136,7 @@ def pre_auton():
     wait(10, MSEC) # Short delay after clear screen to ensure the message is visible before it disappears
     brain.screen.print("Calibration Complete")
     wait(60, MSEC)
-    if Gyro_sensor.heading() == 0: # Check if the Gyro_sensor is connected and responding
+    if Gyro_sensor.heading() == 0 and not Gyro_sensor.heading() > 0: # Check if the Gyro_sensor is connected and responding
         brain.screen.clear_screen(Color.BLACK)
         brain.screen.new_line()
         brain.screen.print("FATAL ERROR: Gyro_sensor Sensor not detected.")
