@@ -186,9 +186,9 @@ def Automonus_callback_0():
         if A01 == 2:
             # right side
             drivetrain.drive_for(FORWARD, NF1, MM, wait=True)
-            drivetrain.turn_to_rotation(RIGHT, 90, DEGREES, wait=True)
+            drivetrain.turn_to_rotation(90, DEGREES, wait=True)
             drivetrain.drive_for(FORWARD, NF2, MM, wait=True)
-            drivetrain.turn_to_rotation(LEFT, 90, DEGREES, wait=True)
+            drivetrain.turn_to_rotation(0, DEGREES, wait=True)
             drivetrain.drive_for(FORWARD, NF3, MM, wait=False)
             AUTOP.broadcast()
             # Intake on
@@ -197,9 +197,9 @@ def Automonus_callback_0():
         if A01 == 1:
             # left side
             drivetrain.drive_for(FORWARD, NF1, MM, wait=True)
-            drivetrain.turn_to_rotation(LEFT, 90, DEGREES, wait=True)
+            drivetrain.turn_to_rotation( 90, DEGREES, wait=True)
             drivetrain.drive_for(FORWARD, NF2, MM, wait=True)
-            drivetrain.turn_to_rotation(RIGHT, 90, DEGREES, wait=True)
+            drivetrain.turn_to_rotation(90, DEGREES, wait=True)
             drivetrain.drive_for(FORWARD, NF3, MM, wait=False)
             AUTOP.broadcast()
             # Intake on
