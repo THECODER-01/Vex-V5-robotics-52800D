@@ -7,7 +7,7 @@
 # ---------------------------------------------------------------------------- #
 #   Additons to commit:                                                        #
 #                                                                              #
-#   edited pm to place holder, Event registration syntax is correct, Motor spin without stops syntax exempt to robot design, and Contradictory pneumatic ops is for straitening flap and moving parts else where (add a comment for that)  # 
+#                                                                              # 
 #                                                                              #
 #   Push to all branches                                                       # 
 #                                                                              # 
@@ -83,15 +83,23 @@ bumper_a = Bumper(brain.three_wire_port.a)
 # right_power = controller_1.axis2.position() # Or axis3 and axis4 for specific styles
 # add something here
 
-time01 = 0
+time01 = 0 #adds 1 every 8 milliseconds in the pre-autonomous loop to allow for a timer to be used for autonomous mode selection and other time-based functions during the pre-autonomous period
+
+# Default Autonomous mode for pre-autonomous period. Initial value:: 1:1
 A01 = 1
 
-# 1:400, 2:756, 3:250
+# Autonomous mode selection time variable for pre-autonomous period. Initial value:: 1:3000 (24 seconds)
+T = 3000
+
+# Autonomous movement distances (in mm) for skills. Initial values:: 1:600, 2:300
+SF1 = 400
+SB1 = 200
+
+# Autonomous movement distances (in mm) for both left and right for top goal. Initial values:: 1:400, 2:756, 3:250
 auto_at_start = None # Set to False to disable the autonomous code in the Automonus event
-F1 = 400
-F2 = 756
-F3 = 250
-# TT = 180
+NF1 = 400
+NF2 = 756
+NF3 = 250
 
 Top = Event()
 O12B = Event()
@@ -113,13 +121,13 @@ def start_a00(a, b):
     global A01
     A01= A01 + a
     if A01 == 0:
-        return b + " :: Autonomous Disabled"
+        return "Autonomous Disabled :: " + b
     if A01 == 1:
-        return b + " :: Autonomous Left"
+        return "Autonomous Left :: " + b
     if A01 == 2:
-        return b + " :: Autonomous Right"
+        return "Autonomous Right :: " + b
     if A01 == 3:
-        return b + " :: Autonomous Skills"
+        return "Autonomous Skills :: " + b
     if A01 == 4:
         A01= 0
     if A01 == -1:
@@ -135,24 +143,30 @@ def pre_auton():
     brain.screen.clear_screen(Color.BLACK)
     wait(10, MSEC) # Short delay after clear screen to ensure the message is visible before it disappears
     brain.screen.print("Calibration Complete")
-    wait(60, MSEC)
-    if Gyro_sensor.heading() == 0 and not Gyro_sensor.heading() > 0: # Check if the Gyro_sensor is connected and responding
-        brain.screen.clear_screen(Color.BLACK)
+    wait(80, MSEC)
+    drivetrain.set_turn_threshold(0.01) # Adjust the turn threshold for more precise turning (default is 1 degree)
+    Gyro_sensor.set_heading(0.01) # Set a small non-zero heading to ensure the sensor is responding and to prevent issues with a zero heading
+    if Gyro_sensor.heading() == 0 or Gyro_sensor.heading() < 0: # Check if the Gyro_sensor is connected and responding
+        brain.screen.clear_screen(Color.RED)
         brain.screen.new_line()
-        brain.screen.print("FATAL ERROR: Gyro_sensor Sensor not detected.")
+        brain.screen.print("FATAL ERROR: Gyro_sensor Sensor FAULTY not detected.", Color.WHITE)
         brain.screen.new_line()
-        brain.screen.print("Please check the connection.")
+        brain.screen.print("Please check the connection.", Color.WHITE)
         return
-    # Set the robot's Gyro_sensor heading to zero
-    Gyro_sensor.set_heading(0, DEGREES)
-    while time01 < 10: # Allow 5 seconds for the user to see the calibration complete message before it disappears
+    Gyro_sensor.set_heading(0, DEGREES) # Set the robot's Gyro_sensor heading to zero
+    # drivetrain.turn_for(self, direction, angle, units=RotationUnits.DEG, velocity=None, units_v:VelocityPercentUnits=VelocityUnits.RPM, wait=True)
+    # drivetrain.turn_to_heading(self, angle, units=RotationUnits.DEG, velocity=None, units_v:VelocityPercentUnits=VelocityUnits.RPM, wait=True)
+    # drivetrain.turn_to_rotation(self, angle, units=RotationUnits.DEG, velocity=None, units_v:VelocityPercentUnits=VelocityUnits.RPM, wait=True)
+    # drivetrain.set_turn_threshold(self, value)
+    # drivetrain.set_turn_constant(self, value)
+    while time01 < T: # Allow 'T' seconds for the user to see the calibration complete message before it disappears
         if controller_1.buttonUp.pressing():
             brain.screen.clear_screen(Color.BLACK)
-            wait(10, MSEC) # Short delay after clear screen to ensure the message is visible before it disappears
-            brain.screen.print(start_a00(a=-1, b="Calibration Complete"))
+            wait(5, MSEC) # Short delay after clear screen to ensure the message is visible before it disappears
+            brain.screen.print(start_a00(a=1, b="Calibration Complete"))
         if controller_1.buttonDown.pressing():
             brain.screen.clear_screen(Color.BLACK)
-            wait(10, MSEC) # Short delay after clear screen to ensure the message is visible before it disappears
+            wait(5, MSEC) # Short delay after clear screen to ensure the message is visible before it disappears
             brain.screen.print(start_a00(a=-1, b="Calibration Complete"))
         if A01 == 0:
             auto_at_start = False
@@ -162,36 +176,38 @@ def pre_auton():
             auto_at_start = True
         if A01 == 3:
             auto_at_start = True
-        wait(100, MSEC) # Check for button presses every 100 milliseconds
+        wait(8, MSEC) # Check for button presses every 100 milliseconds
         time01 = time01 + 1
         # Autonomous control function
 
 def Automonus_callback_0():
-    global Automonus, Bottom, Top, O12B, O12F, O12S, AStop, PH, PL, place_Holder, Keep_Code
+    global Automonus, Bottom, Top, O12B, O12F, O12S, AStop, PH, PL, place_Holder, Keep_Code, auto_at_start, A01, NF1, NF2, NF3, SF1, SB1
     if auto_at_start == True:
         if A01 == 2:
             # right side
-            drivetrain.drive_for(FORWARD, F1, MM, wait=True)
-            drivetrain.turn_for(RIGHT, 90, DEGREES, wait=True)
-            drivetrain.drive_for(FORWARD, F2, MM, wait=True)
-            drivetrain.turn_for(LEFT, 90, DEGREES, wait=True)
-            drivetrain.drive_for(FORWARD, F3, MM, wait=False)
+            drivetrain.drive_for(FORWARD, NF1, MM, wait=True)
+            drivetrain.turn_to_rotation(RIGHT, 90, DEGREES, wait=True)
+            drivetrain.drive_for(FORWARD, NF2, MM, wait=True)
+            drivetrain.turn_to_rotation(LEFT, 90, DEGREES, wait=True)
+            drivetrain.drive_for(FORWARD, NF3, MM, wait=False)
             AUTOP.broadcast()
             # Intake on
             # Top goal
             wait(4, SECONDS)
         if A01 == 1:
             # left side
-            drivetrain.drive_for(FORWARD, F1, MM, wait=True)
-            drivetrain.turn_for(LEFT, 90, DEGREES, wait=True)
-            drivetrain.drive_for(FORWARD, F2, MM, wait=True)
-            drivetrain.turn_for(RIGHT, 90, DEGREES, wait=True)
-            drivetrain.drive_for(FORWARD, F3, MM, wait=False)
+            drivetrain.drive_for(FORWARD, NF1, MM, wait=True)
+            drivetrain.turn_to_rotation(LEFT, 90, DEGREES, wait=True)
+            drivetrain.drive_for(FORWARD, NF2, MM, wait=True)
+            drivetrain.turn_to_rotation(RIGHT, 90, DEGREES, wait=True)
+            drivetrain.drive_for(FORWARD, NF3, MM, wait=False)
             AUTOP.broadcast()
             # Intake on
             # Top goal
             wait(4, SECONDS)
         if A01 == 3:
+            drivetrain.drive_for(FORWARD, SF1, MM, wait=True)
+            drivetrain.drive_for(FORWARD, SB1, MM, wait=True)
             # skills
             wait(4, SECONDS)
 
