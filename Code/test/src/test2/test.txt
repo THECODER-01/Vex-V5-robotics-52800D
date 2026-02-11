@@ -34,3 +34,14 @@ def Automonus_callback_0():
     wait(4, SECONDS)
             
 drivetrain.turn_for(vex.TurnType.RIGHT, 90, vex.RotationUnits.DEG)
+
+
+
+
+def drive00(dNF1, drive00d1, dND1, dNF2, drive00d2, dND2, dNF3):
+    global dNF1, dND1, dNF2, dND2, dNF3
+    drivetrain.drive_for(FORWARD, NF1, MM, wait=True)
+    drivetrain.turn_for(drive00d1, dND1, DEGREES, wait=True)
+    drivetrain.drive_for(FORWARD, NF2, MM, wait=True)
+    drivetrain.turn_for(drive00d2, dND2, DEGREES, wait=True)
+    drivetrain.drive_for(FORWARD, NF3, MM, wait=False)
