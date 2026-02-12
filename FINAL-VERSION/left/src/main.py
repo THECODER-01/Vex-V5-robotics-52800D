@@ -23,7 +23,7 @@ IMPORTNAT NOTES:
     - 44-45:: right motors, DEFAULT: PORT9, PORT20
     - 65-72:: intake and goal motors, DEFAULT: intake-motor_PORT12, middle/top-goal-motor_PORT13, jail-motor_PORT14
     - 80:: pneumatic flap, DEFAULT: three_wire_port.f
-    - 
+---> !! ND1, ND2, NF1, NF2, NF3 variables in lines 120-124 are the autonomous movement distances and turn angles(different than real life angles) for the drive00 function used in the autonomous code. You can adjust these values to change the autonomous movements without having to change the code in the drive00 function or the autonomous code itself. !!
 - IMPORTANT: DO NOT CHANGE THE PORT NUMBERS IN THE PREVIOUS LINES UNTIL YOU FIRST UPDATE THE CABLES ON THE ROBOT TO MATCH THE NEW PORT NUMBERS AND TEST THEM.
 - IMPORTANT LINES FOR DRIVER CONTROL CODE:
     - 312-354:: Driver control loop: controller input reading and button control
@@ -181,7 +181,7 @@ def drive00(dNF1, drive00d1, dND1, dNF2, drive00d2, dND2, dNF3):
 def pre_auton():
     global time01, A01, auto_at_start
     '''
-    !!! IGNORE THE ALL FOLLOWING RED LINES IN THIS FUNCTION UNLESS: !!!
+    !!! IGNORE THE ALL FOLLOWING RED/BLUE LINES IN THIS FUNCTION UNLESS: !!!
     - YOU KNOW WHAT THEY DO
     - WANT TO CHANGE THE CALIBRATION PROCESS
 
