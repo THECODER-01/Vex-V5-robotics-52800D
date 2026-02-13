@@ -297,7 +297,7 @@ def Automonus_callback_0():
             drivetrain.turn_for(RIGHT, 40, DEGREES, wait=False)
             wait(2, SECONDS)
             drivetrain.set_turn_velocity(100, PERCENT)
-            drivetrain.drive_for(REVERSE, 1600, MM, wait=True, velocity=100)
+            drivetrain.drive_for(REVERSE, 1400, MM, wait=True, velocity=100)
             AUTOP.broadcast()
             # skills
     else: # If auto_at_start is False, skip the autonomous code and do nothing in the Automonus event
