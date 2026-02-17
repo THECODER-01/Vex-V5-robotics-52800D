@@ -118,7 +118,7 @@ T = 80
 auto_at_start = None # Set to False to disable the autonomous code in the Automonus event
 
 ND1 = 45
-ND2 = 45
+ND2 = 46
 NF1 = 400
 NF2 = 780
 NF3 = 230
