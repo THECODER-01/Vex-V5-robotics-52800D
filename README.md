@@ -1,4 +1,6 @@
 # Vex-V5-robotics-52800D
-This repo is for Vex V5 robotics team 52800D.
+This repo is for Vex V5 robotics team 52800D/Newton's Third Law (NTL) during their 2025-2026 year.
+
+ALL PEOPLE THAT USE THIS CODE OR RESOURCES MUST CREDIT VEX V5 ROBOTICS TEAM 52800D/Newton's Third Law (NTL).
 
 # THE MAIN PRODUCTION BRANCH IS MASTER01, main IS DEV BRANCH.
