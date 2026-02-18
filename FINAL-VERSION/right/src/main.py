@@ -118,7 +118,7 @@ T = 80
 auto_at_start = None # Set to False to disable the autonomous code in the Automonus event
 
 ND1 = 45
-ND2 = 45
+ND2 = 46
 NF1 = 400
 NF2 = 780
 NF3 = 230
@@ -297,7 +297,7 @@ def Automonus_callback_0():
             drivetrain.turn_for(RIGHT, 40, DEGREES, wait=False)
             wait(2, SECONDS)
             drivetrain.set_turn_velocity(100, PERCENT)
-            drivetrain.drive_for(REVERSE, 1600, MM, wait=True, velocity=100)
+            drivetrain.drive_for(REVERSE, 1400, MM, wait=True, velocity=100)
             AUTOP.broadcast()
             # skills
     else: # If auto_at_start is False, skip the autonomous code and do nothing in the Automonus event
@@ -479,3 +479,4 @@ place_Holder(place_Holder_callback_0)
 pre_auton()
 # add 15ms delay to make sure events are registered correctly.
 wait(15, MSEC)
+
