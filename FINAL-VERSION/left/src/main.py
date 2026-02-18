@@ -118,7 +118,7 @@ T = 80
 auto_at_start = None # Set to False to disable the autonomous code in the Automonus event
 
 ND1 = 45
-ND2 = 45
+ND2 = 46
 NF1 = 400
 NF2 = 780
 NF3 = 230
@@ -479,3 +479,4 @@ place_Holder(place_Holder_callback_0)
 pre_auton()
 # add 15ms delay to make sure events are registered correctly.
 wait(15, MSEC)
+
