@@ -49,15 +49,15 @@ right_motors = MotorGroup(right_motor_f, right_motor_b)
 
 # (Optional) Create an Inertial Sensor for a SmartDrive
 # brain_inertial = Inertial(brain.three_wire_port.h)
-Inertial_sensor = Inertial(Ports.PORT11)
+#Inertial_sensor = Inertial(Ports.PORT20)
 # (Optional) Create an Gyro Sensor for a SmartDrive
 #Gyro_sensor = None # Gyro(brain.three_wire_port.h)
 #Inertial_sensor.quality(100)
 
 # Construct a 4-Motor Drivetrain (SmartDrive is used with an Inertial Sensor)
 # The values (wheel travel, track width, etc.) should be adjusted for your specific robot
-drivetrain = SmartDrive(left_motors, right_motors, Inertial_sensor, 101.6, 254, 177.8, MM, 1)
-#drivetrain = DriveTrain(left_motors, right_motors, 319.19, 309.88, 317.5, MM, 1)
+#drivetrain = SmartDrive(left_motors, right_motors, Inertial_sensor, 101.6, 254, 177.8, MM, 1)
+drivetrain = DriveTrain(left_motors, right_motors, 101.6, 254, 177.8, MM, 1)
 
 """
 Create a drivetrain with the following values:
