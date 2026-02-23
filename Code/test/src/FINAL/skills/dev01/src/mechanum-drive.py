@@ -2,7 +2,7 @@
 #                                                                              #
 # 	Module:       main.py                                                      #
 # 	Author:       Nolan N                                                      #
-# 	Description:  V5 project (MINI-BOT)  V.Latest  V.ALL                       #
+# 	Description:  V5 project (MINI-BOT, MECHANUM-DRIVE)  V.Latest  V.ALL       #
 #                                                                              #
 # ---------------------------------------------------------------------------- #
 #   Additons to commit:                                                        #
@@ -37,14 +37,14 @@ controller_1 = Controller(PRIMARY)
 
 # Create the left Motors and group them under the MotorGroup "left_motors"
 # The 'True' argument in a Motor definition reverses its direction if needed
-left_motor_f = Motor(Ports.PORT7, GearSetting.RATIO_18_1, False)
-left_motor_b = Motor(Ports.PORT8, GearSetting.RATIO_18_1, False)
+left_motor_f = Motor(Ports.PORT21, GearSetting.RATIO_18_1, False)
+left_motor_b = Motor(Ports.PORT19, GearSetting.RATIO_18_1, False)
 left_motors = MotorGroup(left_motor_f, left_motor_b)
 
 # Create the right Motors and group them under the MotorGroup "right_motors"
 # Motors on opposite sides often need to be reversed to spin in the same direction for forward movement
-right_motor_f = Motor(Ports.PORT9, GearSetting.RATIO_18_1, True)
-right_motor_b = Motor(Ports.PORT10, GearSetting.RATIO_18_1, True)
+right_motor_f = Motor(Ports.PORT18, GearSetting.RATIO_18_1, True)
+right_motor_b = Motor(Ports.PORT12, GearSetting.RATIO_18_1, True)
 right_motors = MotorGroup(right_motor_f, right_motor_b)
 
 # (Optional) Create an Inertial Sensor for a SmartDrive
@@ -114,46 +114,50 @@ def Automonus_callback_0():
 
 def ondriver_drivercontrol_0():
     global place_Holder
-    # Using mecanum wheel mapping:
-    # axis1 (x) -> rotation/turn
-    # axis3 (y) -> forward/back
-    # axis4 (z) -> strafe left/right
-    drivetrain.set_drive_velocity(80, PERCENT)
-    drivetrain.set_turn_velocity(80, PERCENT)
-    def _set_motor_speed(motor, speed_percent):
-        # clamp to [-100,100]
-        if speed_percent > 100:
-            speed_percent = 100
-        if speed_percent < -100:
-            speed_percent = -100
-        if speed_percent >= 0:
-            motor.spin(FORWARD, speed_percent, PERCENT)
-        else:
-            motor.spin(REVERSE, -speed_percent, PERCENT)
-
     while True:
-        # Read axes from controller1
-        rot = controller_1.axis1.position()   # rotation (turn)
-        fwd = controller_1.axis3.position()   # forward/back
-        strafe = controller_1.axis4.position() # left/right strafe
+       # Read controller axes each loop so values update continuously.
+       # Axis mapping for mecanum wheels:
+       # axis1 (x) -> rotation (turn left/right)
+       # axis3 (y) -> forward/back
+       # axis4 (z) -> strafe left/right
+        rot = controller_1.axis1.position()
+        forward = controller_1.axis3.position()
+        strafe = controller_1.axis4.position()
 
-        # Mecanum wheel mixing
-        # front_left = fwd + strafe + rot
-        # front_right = fwd - strafe - rot
-        # rear_left = fwd - strafe + rot
-        # rear_right = fwd + strafe - rot
-        fl = fwd + strafe + rot
-        fr = fwd - strafe - rot
-        rl = fwd - strafe + rot
-        rr = fwd + strafe - rot
+        # small deadband to ignore joystick noise
+        deadband = 5
+        if abs(rot) < deadband:
+            rot = 0
+        if abs(forward) < deadband:
+            forward = 0
+        if abs(strafe) < deadband:
+            strafe = 0
 
-        # Optionally scale down if values exceed 100 (already clamped per motor)
-        _set_motor_speed(left_motor_f, fl)
-        _set_motor_speed(right_motor_f, fr)
-        _set_motor_speed(left_motor_b, rl)
-        _set_motor_speed(right_motor_b, rr)
+        # Mecanum wheel mixing (robot-centric):
+        # front_left = forward + strafe + rotation
+        # front_right = forward - strafe - rotation
+        # back_left = forward - strafe + rotation
+        # back_right = forward + strafe - rotation
+        fl = forward + strafe + rot
+        fr = forward - strafe - rot
+        bl = forward - strafe + rot
+        br = forward + strafe - rot
 
-        # Keep existing placeholder broadcast on button A
+        # Normalize values so none exceed 100%
+        max_val = max(abs(fl), abs(fr), abs(bl), abs(br), 100)
+        if max_val > 100:
+            scale = 100.0 / max_val
+            fl *= scale
+            fr *= scale
+            bl *= scale
+            br *= scale
+
+        # Send commands to individual motors
+        left_motor_f.spin(FORWARD, fl, PERCENT)
+        right_motor_f.spin(FORWARD, fr, PERCENT)
+        left_motor_b.spin(FORWARD, bl, PERCENT)
+        right_motor_b.spin(FORWARD, br, PERCENT)
+
         if controller_1.buttonA.pressing():
             place_Holder.broadcast()
 
