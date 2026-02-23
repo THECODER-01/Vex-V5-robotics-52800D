@@ -28,6 +28,13 @@ left_motor_b: Motor (PORT78)
 right_motor_b: Motor (PORT10)
 motor_11: Motor (PORT11) (Ladder Motor)
 '''
+'''
+        axis2N = controller_1.axis2.position()
+        left_motor_f.spin(FORWARD, axis2N, PERCENT)
+        right_motor_f.spin(FORWARD, axis2N, PERCENT)
+        left_motor_b.spin(FORWARD, axis2N, PERCENT)
+        right_motor_b.spin(FORWARD, axis2N, PERCENT)
+'''
 
 # Brain should be defined by default
 brain=Brain()
@@ -114,6 +121,8 @@ def Automonus_callback_0():
 
 def ondriver_drivercontrol_0():
     global place_Holder
+    drivetrain.set_drive_velocity(100, PERCENT)
+    drivetrain.set_turn_velocity(100, PERCENT)
     while True:
        # Read controller axes each loop so values update continuously.
        # Axis mapping for mecanum wheels:
