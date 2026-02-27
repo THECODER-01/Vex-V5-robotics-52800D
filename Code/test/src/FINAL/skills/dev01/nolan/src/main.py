@@ -92,10 +92,12 @@ drivetrain = SmartDrive(left_motors, right_motors, Inertial_sensor, 200, 200, 22
 # calibrate_drivetrain()
 
 # ladder_motor
-motor_11 = Motor(Ports.PORT11, GearSetting.RATIO_18_1, False)
+motor_11 = Motor(Ports.PORT19, GearSetting.RATIO_6_1, False)
+rotation_sensor = Rotation(Ports.PORT18, True)
+rotation_sensor.reset_position()
+Dig_Out_1 = DigitalOut(brain.three_wire_port.h)
 
 Automonus = Event()
-place_Holder = Event()
 #start_Calibration = Event()
 '''
 def pre_auton():
@@ -166,18 +168,42 @@ def ondriver_drivercontrol_0():
         right_motor_f.spin(FORWARD, fr, PERCENT)
         left_motor_b.spin(FORWARD, bl, PERCENT)
         right_motor_b.spin(FORWARD, br, PERCENT)
-
+        '''
         if controller_1.buttonA.pressing():
-            place_Holder.broadcast()
-
+            place_Holder("stop")
+        if controller_1.buttonB.pressing():
+            place_Holder("start")
+        if brain.screen.pressing:
+            place_Holder("start")
+        '''
+        
+        motor_11.spin(FORWARD, 100, PERCENT)
+        if rotation_sensor.angle(DEGREES) == 0:
+            Dig_Out_1.set(False)
+            wait(10, MSEC)
+        if rotation_sensor.angle(DEGREES) == 180:
+            Dig_Out_1.set(True)
+            wait(10, MSEC)
         # small delay for responsiveness
         wait(5, MSEC)
 
-def place_Holder_callback_0():
+def place_Holder(x):
     global place_Holder
-    # This is a place holder for any future events or code you may want to add
-    # You can also use this event for testing or development purposes with out being tied to a specific button or action
-    return
+    while True:
+        # This is a place holder for any future events or code you may want to add
+        # You can also use this event for testing or development purposes with out being tied to a specific button or action
+        if x == "start":
+            motor_11.spin(FORWARD, 100, PERCENT)
+            if rotation_sensor.angle(DEGREES) == 0:
+                Dig_Out_1.set(False)
+                wait(10, MSEC)
+            if rotation_sensor.angle(DEGREES) == 180:
+                Dig_Out_1.set(True)
+                wait(10, MSEC)        
+        if x == "stop":
+            motor_11.stop
+            return
+
 '''
 def start_Calibration_callback_0():
     global Automonus, place_Holder, start_Calibration
@@ -238,7 +264,6 @@ competition = Competition( vexcode_driver_function, vexcode_auton_function )
 
 # system event handlers
 Automonus(Automonus_callback_0)
-place_Holder(place_Holder_callback_0)
 #start_Calibration(start_Calibration_callback_0)
 #pre_auton()
 # add 15ms delay to make sure events are registered correctly.
