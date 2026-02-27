@@ -92,7 +92,7 @@ drivetrain = SmartDrive(left_motors, right_motors, Inertial_sensor, 200, 200, 22
 # calibrate_drivetrain()
 
 # DIY_compressor_motor
-motor_11 = Motor(Ports.PORT19, GearSetting.RATIO_6_1, False)
+motor_11 = Motor(Ports.PORT20, GearSetting.RATIO_6_1, False)
 rotation_sensor = Rotation(Ports.PORT18, True)
 rotation_sensor.reset_position()
 Dig_Out_1 = DigitalOut(brain.three_wire_port.h)
@@ -265,6 +265,7 @@ Automonus(Automonus_callback_0)
 #pre_auton()
 # add 15ms delay to make sure events are registered correctly.
 wait(15, MSEC)
+
 
 
 
