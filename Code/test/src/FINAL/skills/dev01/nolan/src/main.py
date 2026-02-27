@@ -176,14 +176,11 @@ def ondriver_drivercontrol_0():
         if brain.screen.pressing:
             place_Holder("start")
         '''
-        
         motor_11.spin(FORWARD, 100, PERCENT)
         if rotation_sensor.angle(DEGREES) == 0:
             Dig_Out_1.set(False)
-            wait(10, MSEC)
         if rotation_sensor.angle(DEGREES) == 180:
             Dig_Out_1.set(True)
-            wait(10, MSEC)
         # small delay for responsiveness
         wait(5, MSEC)
 
@@ -268,3 +265,4 @@ Automonus(Automonus_callback_0)
 #pre_auton()
 # add 15ms delay to make sure events are registered correctly.
 wait(15, MSEC)
+
