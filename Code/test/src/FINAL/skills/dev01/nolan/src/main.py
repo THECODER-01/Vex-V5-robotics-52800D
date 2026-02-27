@@ -183,7 +183,7 @@ def ondriver_drivercontrol_0():
             Dig_Out_1.set(True)
         # small delay for responsiveness
         wait(5, MSEC)
-
+'''
 def place_Holder(x):
     global place_Holder
     while True:
@@ -200,7 +200,7 @@ def place_Holder(x):
         if x == "stop":
             motor_11.stop
             return
-
+'''
 '''
 def start_Calibration_callback_0():
     global Automonus, place_Holder, start_Calibration
@@ -265,4 +265,5 @@ Automonus(Automonus_callback_0)
 #pre_auton()
 # add 15ms delay to make sure events are registered correctly.
 wait(15, MSEC)
+
 
