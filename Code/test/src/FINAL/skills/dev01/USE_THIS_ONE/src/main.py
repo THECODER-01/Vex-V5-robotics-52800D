@@ -93,7 +93,7 @@ drivetrain = SmartDrive(left_motors, right_motors, Inertial_sensor, 200, 200, 22
 
 # ladder_motor
 motor_12 = Motor(Ports.PORT13, GearSetting.RATIO_18_1, False)
-Dig_Out_1 = DigitalOut(brain.three_wire_port.h)
+#Dig_Out_1 = DigitalOut(brain.three_wire_port.h)
 Automonus = Event()
 #start_Calibration = Event()
 '''
