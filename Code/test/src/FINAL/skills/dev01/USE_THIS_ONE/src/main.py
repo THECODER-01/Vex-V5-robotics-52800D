@@ -44,14 +44,14 @@ controller_1 = Controller(PRIMARY)
 
 # Create the left Motors and group them under the MotorGroup "left_motors"
 # The 'True' argument in a Motor definition reverses its direction if needed
-left_motor_f = Motor(Ports.PORT1, GearSetting.RATIO_18_1, False)
-left_motor_b = Motor(Ports.PORT11, GearSetting.RATIO_18_1, False)
+left_motor_f = Motor(Ports.PORT20, GearSetting.RATIO_18_1, False)
+left_motor_b = Motor(Ports.PORT9, GearSetting.RATIO_18_1, False)
 left_motors = MotorGroup(left_motor_f, left_motor_b)
 
 # Create the right Motors and group them under the MotorGroup "right_motors"
 # Motors on opposite sides often need to be reversed to spin in the same direction for forward movement
-right_motor_f = Motor(Ports.PORT10, GearSetting.RATIO_18_1, True)
-right_motor_b = Motor(Ports.PORT20, GearSetting.RATIO_18_1, True)
+right_motor_f = Motor(Ports.PORT11, GearSetting.RATIO_18_1, True)
+right_motor_b = Motor(Ports.PORT2, GearSetting.RATIO_18_1, True)
 right_motors = MotorGroup(right_motor_f, right_motor_b)
 
 # (Optional) Create an Inertial Sensor for a SmartDrive
@@ -92,7 +92,7 @@ drivetrain = SmartDrive(left_motors, right_motors, Inertial_sensor, 200, 200, 22
 # calibrate_drivetrain()
 
 # ladder_motor
-motor_12 = Motor(Ports.PORT12, GearSetting.RATIO_18_1, False)
+motor_12 = Motor(Ports.PORT13, GearSetting.RATIO_18_1, False)
 Dig_Out_1 = DigitalOut(brain.three_wire_port.h)
 Automonus = Event()
 #start_Calibration = Event()
