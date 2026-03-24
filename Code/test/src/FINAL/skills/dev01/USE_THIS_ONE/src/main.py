@@ -129,8 +129,8 @@ def ondriver_drivercontrol_0():
        # axis3 (y) -> forward/back
        # axis4 (z) -> strafe left/right
         rot = controller_1.axis1.position()
-        forward = controller_1.axis3.position()
-        strafe = controller_1.axis4.position()
+        forward = (controller_1.axis3.position())-(controller_1.axis3.position()) * 2
+        strafe = (controller_1.axis4.position())-(controller_1.axis4.position()) * 2
 
         # small deadband to ignore joystick noise
         deadband = 5
@@ -173,6 +173,12 @@ def ondriver_drivercontrol_0():
         if brain.screen.pressing:
             place_Holder("start")
         '''
+        if controller_1.buttonA.pressing():
+            motor_12.spin(FORWARD, 30, PERCENT)
+        if controller_1.buttonB.pressing():
+            motor_12.stop()
+        if controller_1.buttonX.pressing():
+            motor_12.spin(FORWARD, -30, PERCENT)
         # small delay for responsiveness
         wait(5, MSEC)
 
@@ -182,10 +188,10 @@ def place_Holder(x):
         # This is a place holder for any future events or code you may want to add
         # You can also use this event for testing or development purposes with out being tied to a specific button or action
         if x == "start":
-            motor_12.spin(FORWARD, 100, PERCENT)
+            motor_12.spin(FORWARD, 30, PERCENT)
             return
         if x == "stop":
-            motor_12.stop
+            motor_12.spin(FORWARD, -30, PERCENT)
             return
 '''
 def start_Calibration_callback_0():
