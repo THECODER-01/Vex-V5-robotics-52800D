@@ -85,7 +85,7 @@ motor_14 = Motor(Ports.PORT14, GearSetting.RATIO_18_1, False)
 
 # Define a 3-wire digital output Pneumatic on port F
 pneumatic_flap = Pneumatics(brain.three_wire_port.f)
-
+descore_E = Pneumatics(brain.three_wire_port.e)
 # Define a 3-wire Bumper on port A
 # bumper_a = Bumper(brain.three_wire_port.a)
 
@@ -348,6 +348,10 @@ def ondriver_drivercontrol_0():
             Keep_Code.broadcast()
         if controller_1.buttonY.pressing():
             O12B.broadcast()
+        if controller_1.buttonUp.pressing():
+            descore_E.open()
+        if controller_1.buttonDown.pressing():
+            descore_E.close()
         
         # \/ A very small delay to prevent runaway errors and allow for more responsive controls \/
         wait(5, MSEC)
